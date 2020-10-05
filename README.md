@@ -2,17 +2,18 @@
 
 ## Symptoms
 
-You experience the following issues in Windows 10, version 1809:
+You probably experience the following issues in Windows 10, version 1809 - 1903:
 
 	In Windows Explorer, a red X appears on the mapped network drives.
+	
 	Mapped network drives are displayed as Unavailable when you run the net use command at a command prompt.
+	
 	In the notification area, a notification displays the following message:
-			
 		Could not reconnect all network drives.
 
 ## Workaround
 
-Microsoft is working on a resolution and estimates a solution will be available by the end of November 2018. Monitor the mapped drive topic in the Windows 10 1809 Update History KB 4464619. Currently, you can work around this issue by running scripts to automatically reconnect mapped network drive when you log on the device. To do this, create two script files, and then use one of the workarounds, as appropriate.
+Microsoft developed a solution in late November 2018, however it is buggy and is unreliable. Currently, you can work around this issue by running scripts to automatically reconnect mapped network drive when you log on the device. To do this, create two script files, and then use one of the workarounds, as appropriate.
 
 ### Scripts
 #### Create a script file named MapDrives.cmd
@@ -53,7 +54,7 @@ All workarounds should be executed in standard user security context. Executing 
 
 #### Workaround 1: Create a startup item
 
-_Note_ This workaround works only for the device that has network access at logon. If the device has not established a network connection by the time of logon, the startup script won't automatically reconnect network drives.
+[Note] This workaround works only for the device that has network access at logon. If the device has not established a network connection by the time of logon, the startup script won't automatically reconnect network drives.
 
    Copy the script file (MapDrives.cmd) to the following location:
 
@@ -72,17 +73,17 @@ _Note_ This workaround works only for the device that has network access at logo
 
     %SystemDrive%\Scripts\
    In Task Scheduler, select Action > Create Task.
-   On the General tab in the Create Task dialog box, type a name (such as Map Network Drives) and description for the task.
+   On the General tab in the Create Task dialog box, type a name (such as "Map Network Drives") and description for the task.
    Select Change User or Group, select a local user or group (such as LocalComputer\Users) and then select OK.
    On the Triggers tab, select New, and then select At log on for the Begin the task field.
    On the Actions tab, select New, and then select Start a program for the Action field.
    Type Powershell.exe for the Program/script field.
 
-   In the Add arguments (optional) field, type the following:
+   In the Add arguments ([optional]) field, type the following:
 
     -windowsstyle hidden -command .\MapDrives.ps1 >> %TEMP%\StartupLog.txt 2>&1
 
-   In the Start in (optional) field, type the location (%SystemDrive%\Scripts\) of the script file.
+   In the Start in ([optional]) field, type the location (%SystemDrive%\Scripts\) of the script file.
    On the Conditions tab, select the Start only if the following network connection is available option, select Any connection, and then select OK.
    Log off, and then log back on to the device to run the scheduled task.
 
